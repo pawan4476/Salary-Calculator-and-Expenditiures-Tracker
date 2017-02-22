@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import <ObjectiveDropboxOfficial/ObjectiveDropboxOfficial.h>
 
 @interface AppDelegate ()
 
@@ -16,10 +17,49 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    [DropboxClientsManager setupWithAppKey:@"140eke1deg1wug1"];
+   // [[UITabBar appearance] setBackgroundColor:[UIColor grayColor]];
     // Override point for customization after application launch.
     return YES;
 }
 
+-(BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options{
+    
+    DBOAuthResult *authResult = [DropboxClientsManager handleRedirectURL:url];
+    if ([authResult isSuccess]) {
+        
+        NSString *value = @"1";
+        [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"dropBox"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UIApplicationDidBecomeActiveNotification" object:nil];
+        NSLog(@"Authorization is seccess");
+        
+    }
+    
+    else if ([authResult isCancel]){
+        
+        NSString *value = @"0";
+        [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"dropBox"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UIApplicationDidBecomeActiveNotification" object:nil];
+        NSLog(@"Authorization is terminated");
+        
+    }
+    
+    else if ([authResult isError]){
+        
+        NSString *value = @"0";
+        [[NSUserDefaults standardUserDefaults] setObject:value forKey:@"dropBox"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"UIApplicationDidBecomeActiveNotification" object:nil];
+        NSLog(@"Authorization is failed");
+        
+    }
+    
+    return NO;
+    
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

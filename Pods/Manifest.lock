@@ -1,0 +1,12 @@
+PODS:
+  - ObjectiveDropboxOfficial (2.0.6)
+
+DEPENDENCIES:
+  - ObjectiveDropboxOfficial
+
+SPEC CHECKSUMS:
+  ObjectiveDropboxOfficial: 32a5160465cc2e644710a793d8a0dad16dc18768
+
+PODFILE CHECKSUM: d83645036dc0970743c442345763fb933097137c
+
+COCOAPODS: 1.1.1
